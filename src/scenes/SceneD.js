@@ -49,11 +49,25 @@ class SceneD extends Phaser.Scene{
         this.tubo.body.immovable=true;
         this.tubo.body.moves=false;
 
-        this.sigLvl2=this.add.image(660,420,'lvl1_2').setScale(0.7);
+        //this.sigLvl2=this.add.image(660,420,'lvl1_2').setScale(0.7);
+        this.sigLvl2=this.add.sprite(660,420,'portal').setScale(0.7)
         this.physics.add.existing(this.sigLvl2, false);
         this.sigLvl2.body.setCollideWorldBounds(true);
         this.sigLvl2.body.immovable=true;
         this.sigLvl2.body.moves=false;
+
+        this.anims.create({
+            key: 'portal1',
+            frames: this.anims.generateFrameNames('portal', {
+            prefix: 'lvl1_2_',
+            start: 0,
+            end: 10
+            }),
+            repeat: -1,
+            frameRate: 12
+            });
+        
+        this.sigLvl2.anims.play('portal1');
 
         ////////////////////////////////////PERSONAJE////////////////////////////////////////////////////
           
