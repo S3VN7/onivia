@@ -138,12 +138,12 @@ class SceneB extends Phaser.Scene{
                 }, 1300);
 
             //GameOver
-             if(this.data.get('vidas')==0){
-                console.log("Game Over");
-                this.scene.start('SceneA');
-                this.scene.restart('SceneB');
+            //  if(this.data.get('vidas')==0){
+            //     console.log("Game Over");
+            //     this.scene.start('SceneA');
+            //     this.scene.restart('SceneB');
     
-              }
+            //   }
           }
          this.physics.add.collider(this.Nio_lvl1,this.grupo2_lvl1,choquePicos,null,this);
 
@@ -208,6 +208,7 @@ class SceneB extends Phaser.Scene{
         const camera2 =
         //posición x, posición y, ancho, alto
         this.cameras.add(0, 0, 260, 80).setZoom(1.3)
+        camera2.ignore(this.Nio_lvl1);
          setTimeout( () => {
          // coordenada x, coordeada y, duración, interpolación
          camera2.pan(this.container_lvl1.x, this.container_lvl1.y, 3000, 'Sine.easeInOut');
@@ -225,6 +226,51 @@ class SceneB extends Phaser.Scene{
                this.Nio_lvl1.body.setVelocityY(0);
                });
         }
+
+        ///////////////////CAIDA//////////////////////////////////////////////////    
+        if(this.Nio_lvl1.body.velocity.y >= 500)
+        {
+           // console.log(this.Nio.body.velocity.y)
+                this.fuerte=1;
+            //    console.log(this.fuerte);
+            
+        }
+
+        if(this.Nio_lvl1.body.touching.down && this.fuerte == 1)
+        {
+            console.log("Auch!")
+            this.Nio_lvl1.setTint(0xff0000)
+            setTimeout(() => {
+                this.Nio_lvl1.clearTint();
+                }, 1300);
+            console.log("Caida");
+
+            this.data.list.vidas -= 1;
+
+            //Actualizacion del cartel de vidas
+             const container_lvl1 = this.add.container(100, 30).setScale(0.08); //su origen es 0.5
+             this.contenedor_lvl1 = this.add.image(0, 0, 'contenedor'); //su origen es 0.5
+             this.texto_lvl1 = this.add.text(250,-100,`x ${this.data.get('vidas')}`,{
+             fontSize: 250}); // su origen es 0,0
+             this.head_lvl1 = this.add.image(-500, 50, 'head').setScale(15); //su origen es 0.5
+             this.cora_lvl1 = this.add.image(0, 0, 'coraz').setScale(5);
+             container_lvl1.add([
+             this.contenedor_lvl1,
+             this.head_lvl1,
+             this.cora_lvl1,
+             this.texto_lvl1]);
+
+            this.fuerte = 0;
+        }
+
+        //GameOver
+        if(this.data.get('vidas')==0){
+        console.log("Game Over");
+        this.salto=0;
+        this.scene.start('SceneGO');
+        this.scene.stop('SceneB');
+            
+                      }
 
     }
 }

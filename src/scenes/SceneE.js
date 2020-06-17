@@ -1,18 +1,29 @@
+
+
 class SceneE extends Phaser.Scene{
     constructor(){
+        
     super({
     key: 'SceneE'
     });
     this.sal=0;
+    this.dato_lvl2;
+    this.dato2_lvl2;
+    this.fuerte=0;
+    this.Nio;
+
     }
     init() {
     console.log('Escena E');
+    
     }
-    create(dato,dato2) {
+    create(dato,dato2,) {
         
 //////////////////////////////////////DATOS//////////////////////////////////////////////////////////
         // this.scene.launch('SceneF')
         //this.data.set('vidas', 5);
+        this.dato_lvl2 = dato;
+        this.dato2_lvl2 = dato2;
         this.data.set('curaciones', 1);
         //this.data.set('monstruos', 1)    
  ////////////////////////////////////FONDO/////////////////////////////////////////////////////////
@@ -110,6 +121,7 @@ class SceneE extends Phaser.Scene{
  
          this.Nio.body.maxVelocity.x = 250;
          
+         
          //Movimiento a la derecha
          this.cursor.right.on('down', () => {
              this.Nio.body.setVelocityX(800);
@@ -128,11 +140,21 @@ class SceneE extends Phaser.Scene{
         });
  
          //Salto
-       if(this.sal<2){
+        if(this.sal<2){
         this.cursor.up.on('down', () => {
+        
+        this.arriba = 1;
         this.Nio.body.setVelocityY(-300);
         this.sal=this.sal+1;
         console.log("This salto= "+this.sal);
+
+        if(this.Nio.velocityY >= 0)
+        {
+            this.ValYA = this.Nio.y;
+            console.log(this.ValYA);
+        }
+      
+                
         });
         }else{
             this.cursor.up.on('down', () => {
@@ -187,7 +209,7 @@ class SceneE extends Phaser.Scene{
     
  });
 
-
+   
     /////////////////////////EVENTOS///////////////////////////////////////////////////////////
     this.physics.add.collider(this.Nio,this.grupo);
 
@@ -200,7 +222,7 @@ class SceneE extends Phaser.Scene{
         {
         Morfeo.setTint(0xff0000);
         setTimeout(() => {
-            this.Nio.clearTint();
+            this.Morfeo.clearTint();
             }, 1300);
          console.log("Morfeo recibió daño");
          //this.registry.events.emit('daño', 1); 
@@ -210,11 +232,11 @@ class SceneE extends Phaser.Scene{
 
     function ChoqueMorfeo (Nio, Morfeo)
         {
-            dato-=1;
+            this.dato_lvl2-=1;
             this.data.set('vidas', 5);
             const container = this.add.container(100, 30).setScale(0.08); 
             this.contenedor = this.add.image(0, 0, 'contenedor'); 
-            this.texto = this.add.text(250,-100,'x '+ dato,{
+            this.texto = this.add.text(250,-100,'x '+ this.dato_lvl2,{
             fontSize: 250}); // su origen es 0,0
             this.head = this.add.image(-500, 50, 'head').setScale(15); 
             this.cora = this.add.image(0, 0, 'coraz').setScale(5);
@@ -223,7 +245,8 @@ class SceneE extends Phaser.Scene{
                 this.head,
                 this.cora,
                 this.texto]);
-            Nio.setTint(0xff0000);
+                
+            Nio.setTint(0xff0000);           
             setTimeout(() => {
                 this.Nio.clearTint();
                 }, 1300);
@@ -245,7 +268,7 @@ class SceneE extends Phaser.Scene{
         // this.data.set('vidas', 5);
         const container = this.add.container(100, 30).setScale(0.08); 
         this.contenedor = this.add.image(0, 0, 'contenedor'); 
-        this.texto = this.add.text(250,-100,'x '+ dato,{
+        this.texto = this.add.text(250,-100,'x '+ this.dato_lvl2,{
          fontSize: 250}); // su origen es 0,0
         this.head = this.add.image(-500, 50, 'head').setScale(15); 
         this.cora = this.add.image(0, 0, 'coraz').setScale(5);
@@ -255,14 +278,16 @@ class SceneE extends Phaser.Scene{
             this.cora,
             this.texto]);
 
-         const camera2_2 =
+         const cameralvl2 =
           this.cameras.add(0, 0, 260, 80).setZoom(1.3);
+          cameralvl2.ignore(this.Nio);
           setTimeout( () => {
-          camera2_2.pan(this.container.x, this.container.y, 3000, 'Sine.easeInOut');
+          cameralvl2.pan(this.container.x, this.container.y, 3000, 'Sine.easeInOut');
           }, 2000); 
     }
 
     update(time, delta) {
+        
         if(this.sal<2){
             this.cursor.up.on('down', () => {
                 this.Nio.body.setVelocityY(-300);
@@ -272,6 +297,54 @@ class SceneE extends Phaser.Scene{
                 this.Nio.body.setVelocityY(0);
                 });
             }
+        
+
+        ///////////////////CAIDA//////////////////////////////////////////////////    
+            if(this.Nio.body.velocity.y >= 500)
+                {
+                   // console.log(this.Nio.body.velocity.y)
+                        this.fuerte=1;
+                    //    console.log(this.fuerte);
+                    
+                }
+
+                if(this.Nio.body.touching.down && this.fuerte == 1)
+                {
+                    console.log("Auch!")
+                    this.Nio.setTint(0xff0000)
+                    setTimeout(() => {
+                        this.Nio.clearTint();
+                        }, 1300);
+                    console.log("Caida");
+
+                    this.dato_lvl2-=1;
+
+
+                    //Actualizacion del cartel de vidas
+                     const container = this.add.container(100, 30).setScale(0.08); //su origen es 0.5
+                     this.contenedor= this.add.image(0, 0, 'contenedor'); //su origen es 0.5
+                     this.texto = this.add.text(250,-100,`x ${this.dato_lvl2}`,{
+                     fontSize: 250}); // su origen es 0,0
+                     this.head = this.add.image(-500, 50, 'head').setScale(15); //su origen es 0.5
+                     this.cora = this.add.image(0, 0, 'coraz').setScale(5);
+                     container.add([
+                     this.contenedor,
+                     this.head,
+                     this.cora,
+                     this.texto]);
+
+                    this.fuerte = 0;
+                }
+
+                if(this.dato_lvl2==0){
+                    console.log("Game Over");
+                    this.scene.start('SceneGO');
+                    this.scene.stop('SceneE');
+                        
+                                  }
+
+               
+
     }
     }
     export default SceneE;

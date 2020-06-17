@@ -4,6 +4,8 @@ class SceneC extends Phaser.Scene{
             key: 'SceneC'
         });
     this.salta=0;
+    this.dato_lvl1_2;
+    this.dato2_lvl1_2;
     }
 
     init() {
@@ -12,6 +14,8 @@ class SceneC extends Phaser.Scene{
     preload() {
     }
     create(dato,dato2) {
+        this.dato_lvl1_2 = dato;
+        this.dato2_lvl1_2 = dato2;
          ////////////////////////////////////FONDO/////////////////////////////////////////////////////////
         this.add.image(0, 0, 'cielo3').setScale(0.55, 0.7);
  
@@ -114,7 +118,19 @@ class SceneC extends Phaser.Scene{
             muros5_lvl1_2.body.moves=false;
         } );
          ////////////////////////////////////PERSONAJE////////////////////////////////////////////////////
-          
+         this.Night = this.add.sprite(400,150,'night').setScale(1.3);
+         this.anims.create({
+            key: 'fly1',
+            frames: this.anims.generateFrameNames('night', {
+            prefix: 'night_',
+            frames: [0,1,0]
+            }),
+            repeat: -1,
+            frameRate: 12
+            });
+
+         this.Night.anims.play('fly1');
+
           this.Nio_lvl1_2 = this.add.sprite(20,100,'nio').setScale(1.3).setScrollFactor(1);
           this.physics.add.existing(this.Nio_lvl1_2);
           this.physics.add.existing(this.Nio_lvl1_2, false);
@@ -217,7 +233,7 @@ class SceneC extends Phaser.Scene{
            //Siguiente nivel 
          function cambioScene2(Nio_lvl1, esquina){
             console.log("Siguiente parte");
-            this.scene.start('SceneD',dato,dato2);
+            this.scene.start('SceneD',this.dato_lvl1_2,this.dato2_lvl1_2);
             this.scene.stop('SceneC');
           }
           this.physics.add.collider(this.Nio_lvl1_2,this.sigLvl,cambioScene2,null,this);
@@ -228,7 +244,7 @@ class SceneC extends Phaser.Scene{
         //Cartel de vidas
         const container_lvl1_2 = this.add.container(100, 30).setScale(0.08); //su origen es 0.5
         this.contenedor_lvl1_2 = this.add.image(0, 0, 'contenedor'); //su origen es 0.5
-        this.texto_lvl1_2 = this.add.text(250,-100,`x ${dato}`,{
+        this.texto_lvl1_2 = this.add.text(250,-100,`x ${this.dato_lvl1_2}`,{
             fontSize: 250}); // su origen es 0,0
         this.head_lvl1_2 = this.add.image(-500, 50, 'head').setScale(15); //su origen es 0.5
         this.cora_lvl1_2 = this.add.image(0, 0, 'coraz').setScale(5);
@@ -245,6 +261,7 @@ class SceneC extends Phaser.Scene{
  
          const camera2_2 =
          this.cameras.add(0, 0, 260, 80).setZoom(1.3);
+         camera2_2.ignore(this.Nio_lvl1_2);
          setTimeout( () => {
          camera2_2.pan(this.container_lvl1_2.x, this.container_lvl1_2.y, 3000, 'Sine.easeInOut');
          }, 2000); 
@@ -262,6 +279,50 @@ class SceneC extends Phaser.Scene{
             });
         }
 
+        ///////////////////CAIDA//////////////////////////////////////////////////    
+        if(this.Nio_lvl1_2.body.velocity.y >= 500)
+        {
+           // console.log(this.Nio.body.velocity.y)
+                this.fuerte=1;
+            //    console.log(this.fuerte);
+            
+        }
+
+        if(this.Nio_lvl1_2.body.touching.down && this.fuerte == 1)
+        {
+            console.log("Auch!")
+            this.Nio_lvl1_2.setTint(0xff0000)
+            setTimeout(() => {
+                this.Nio_lvl1_2.clearTint();
+                }, 1300);
+            console.log("Caida");
+
+            this.dato_lvl1_2-=1;
+
+            //Actualizacion del cartel de vidas
+            const container_lvl1_2 = this.add.container(100, 30).setScale(0.08); //su origen es 0.5
+            this.contenedor_lvl1_2 = this.add.image(0, 0, 'contenedor'); //su origen es 0.5
+            this.texto_lvl1_2 = this.add.text(250,-100,`x ${this.dato_lvl1_2}`,{
+                fontSize: 250}); // su origen es 0,0
+            this.head_lvl1_2 = this.add.image(-500, 50, 'head').setScale(15); //su origen es 0.5
+            this.cora_lvl1_2 = this.add.image(0, 0, 'coraz').setScale(5);
+            container_lvl1_2.add([
+                this.contenedor_lvl1_2,
+                this.head_lvl1_2,
+                this.cora_lvl1_2,
+                this.texto_lvl1_2]);
+
+            this.fuerte = 0;
+        }
+
+        //GameOver
+        if(this.dato_lvl1_2==0){
+            console.log("Game Over");
+            this.scene.start('SceneGO');
+            //this.scene.restart('SceneC')
+            this.scene.stop('SceneC');
+                
+                          }
     }
 }
 export default SceneC;

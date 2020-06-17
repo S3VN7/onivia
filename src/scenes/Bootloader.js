@@ -32,6 +32,7 @@ class Bootloader extends Phaser.Scene{
         this.load.image('piso','piso.jpg');
         this.load.image('tubo','tuboBalas.png');
         this.load.atlas('portal','portal_PP3/portal.png','portal_PP3/portal_atlas.json');
+        this.load.atlas('night','night_PP3/night.png','night_PP3/night_atlas.json');
 
         //lvl2
         this.load.image(['Plataformas', 'suelo', 'pared',]);
@@ -45,6 +46,12 @@ class Bootloader extends Phaser.Scene{
         this.load.image(['contenedor','head']);
         this.load.image("coraz","coraz.png");
         this.load.image('disparo','disparo.png');
+
+        //GameOverScene
+        this.load.image("gameover","Game over.png");
+        this.load.image("back","back.png");
+        this.load.image("skull","skull.png");
+        
     }
     create() {
         console.log(this.scene.manager.scenes);
@@ -60,6 +67,7 @@ class Bootloader extends Phaser.Scene{
         this.burbuja = this.sound.add("burbuja",{volume: 4});
         const eventos = Phaser.Input.Events;
         const teclado = Phaser.Input.Keyboard;
+        
         this.comenzar.on(eventos.POINTER_MOVE, (evento) => {
             this.comenzar.setScale(0.17);
             this.burbuja.play();

@@ -4,11 +4,15 @@ class SceneD extends Phaser.Scene{
     key: 'SceneD'
     });
     this.salt=0;
+    this.dato_lvl1_3;
+    this.dato2_lvl1_3;
     }
     init() {
     console.log('Escena D');
     }
     create(dato,dato2) {
+        this.dato_lvl1_3 = dato;
+        this.dato2_lvl1_3 = dato2;
         this.add.image(0, 0, 'cielo3').setScale(0.55, 0.7);
 
         this.grupo_lvl1_3 = this.physics.add.group();
@@ -186,13 +190,13 @@ class SceneD extends Phaser.Scene{
 
 
       function choqueBala(Nio_lvl1_3, bala2_lvl1){
-        dato-=1;
+        this.dato_lvl1_3-=1;
         this.bala2_lvl1.body.setVelocityX(400);
         this.bala2_lvl1.destroy();
         this.Nio_lvl1_3.setPosition(10,430);
         const container_lvl1_3 = this.add.container(100, 30).setScale(0.08); //su origen es 0.5
         this.contenedor_lvl1_3 = this.add.image(0, 0, 'contenedor'); //su origen es 0.5
-        this.texto_lvl1_3 = this.add.text(250,-100,`x ${dato}`,{
+        this.texto_lvl1_3 = this.add.text(250,-100,`x ${this.dato_lvl1_3}`,{
             fontSize: 250}); // su origen es 0,0
         this.head_lvl1_3 = this.add.image(-500, 50, 'head').setScale(15); //su origen es 0.5
         this.cora_lvl1_3 = this.add.image(0, 0, 'coraz').setScale(5);
@@ -216,10 +220,10 @@ class SceneD extends Phaser.Scene{
         this.picos.body.setSize(220,140);
 
         function picos2(Nio_lvl1_3, picos){
-            dato-=1;
+            this.dato_lvl1_3-=1;
             const container_lvl1_3 = this.add.container(100, 30).setScale(0.08); //su origen es 0.5
             this.contenedor_lvl1_3 = this.add.image(0, 0, 'contenedor'); //su origen es 0.5
-            this.texto_lvl1_3 = this.add.text(250,-100,`x ${dato}`,{
+            this.texto_lvl1_3 = this.add.text(250,-100,`x ${this.dato_lvl1_3}`,{
                 fontSize: 250}); // su origen es 0,0
             this.head_lvl1_3 = this.add.image(-500, 50, 'head').setScale(15); //su origen es 0.5
             this.cora_lvl1_3 = this.add.image(0, 0, 'coraz').setScale(5);
@@ -242,7 +246,7 @@ class SceneD extends Phaser.Scene{
         this.physics.add.collider(this.Nio_lvl1_3,this.bala2_lvl1,choqueBala,null,this);
 
         function escudo_lvl1(Nio_lvl1_3, escudo_lvl1){
-            dato+=1;
+            this.dato_lvl1_3+=1;
             this.escudo_lvl1.destroy();
             setTimeout(() => {
                 this.Nio_lvl1_3.clearTint();
@@ -253,7 +257,7 @@ class SceneD extends Phaser.Scene{
 
         function cambioSceneLvl2(Nio_lvl1_3, sigLvl2){
             console.log("Siguiente parte");
-            this.scene.start('SceneE',dato,dato2);
+            this.scene.start('SceneE',this.dato_lvl1_3,this.dato2_lvl1_3);
             this.scene.stop('SceneD');
           }
           this.physics.add.collider(this.Nio_lvl1_3,this.sigLvl2,cambioSceneLvl2,null,this);
@@ -262,7 +266,7 @@ class SceneD extends Phaser.Scene{
       //Cartel de vidas
       const container_lvl1_3 = this.add.container(100, 30).setScale(0.08); //su origen es 0.5
       this.contenedor_lvl1_3 = this.add.image(0, 0, 'contenedor'); //su origen es 0.5
-      this.texto_lvl1_3 = this.add.text(250,-100,`x ${dato}`,{
+      this.texto_lvl1_3 = this.add.text(250,-100,`x ${this.dato_lvl1_3}`,{
           fontSize: 250}); // su origen es 0,0
       this.head_lvl1_3 = this.add.image(-500, 50, 'head').setScale(15); //su origen es 0.5
       this.cora_lvl1_3 = this.add.image(0, 0, 'coraz').setScale(5);
@@ -280,6 +284,7 @@ class SceneD extends Phaser.Scene{
 
       const camera2_3 =
       this.cameras.add(0, 0, 260, 80).setZoom(1.3);
+      camera2_3.ignore(this.Nio_lvl1_3);
       setTimeout( () => {
       camera2_3.pan(this.container_lvl1_3.x, this.container_lvl1_3.y, 3000, 'Sine.easeInOut');
       }, 2000); 
@@ -291,10 +296,10 @@ class SceneD extends Phaser.Scene{
     this.cora_lvl1.body.moves=false;
     this.cora_lvl1.body.setSize(100,100);
     function activCora(Nio_lvl1_3, cora_lvl1){
-        dato+=1;
+        this.dato_lvl1_3+=1;
         const container_lvl1_3 = this.add.container(100, 30).setScale(0.08); //su origen es 0.5
         this.contenedor_lvl1_3 = this.add.image(0, 0, 'contenedor'); //su origen es 0.5
-        this.texto_lvl1_3 = this.add.text(250,-100,`x ${dato}`,{
+        this.texto_lvl1_3 = this.add.text(250,-100,`x ${this.dato_lvl1_3}`,{
             fontSize: 250}); // su origen es 0,0
         this.head_lvl1_3 = this.add.image(-500, 50, 'head').setScale(15); //su origen es 0.5
         this.cora_lvl1_3 = this.add.image(0, 0, 'coraz').setScale(5);
@@ -343,6 +348,49 @@ class SceneD extends Phaser.Scene{
                 this.Nio_lvl1_3.body.setVelocityY(0);
                 });
             }
+
+        ///////////////////CAIDA//////////////////////////////////////////////////    
+        if(this.Nio_lvl1_3.body.velocity.y >= 500)
+        {
+           // console.log(this.Nio.body.velocity.y)
+                this.fuerte=1;
+            //    console.log(this.fuerte);
+            
+        }
+
+        if(this.Nio_lvl1_3.body.touching.down && this.fuerte == 1)
+        {
+            console.log("Auch!")
+            this.Nio_lvl1_3.setTint(0xff0000)
+            setTimeout(() => {
+                this.Nio_lvl1_3.clearTint();
+                }, 1300);
+            console.log("Caida");
+
+            this.dato_lvl1_3-=1;
+
+            //Actualizacion del cartel de vidas
+             const container_lvl1_3 = this.add.container(100, 30).setScale(0.08); //su origen es 0.5
+             this.contenedor_lvl1_3 = this.add.image(0, 0, 'contenedor'); //su origen es 0.5
+             this.texto_lvl1_3 = this.add.text(250,-100,`x ${this.dato_lvl1_3}`,{
+             fontSize: 250}); // su origen es 0,0
+             this.head_lvl1_3 = this.add.image(-500, 50, 'head').setScale(15); //su origen es 0.5
+             this.cora_lvl1_3 = this.add.image(0, 0, 'coraz').setScale(5);
+             container_lvl1_3.add([
+             this.contenedor_lvl1_3,
+             this.head_lvl1_3,
+             this.cora_lvl1_3,
+             this.texto_lvl1_3]);
+
+            this.fuerte = 0;
+        }
+
+        if(this.dato_lvl1_3==0){
+            console.log("Game Over");
+            this.scene.start('SceneGO');
+            this.scene.stop('SceneD');
+                
+                          }
         
     }
 }
