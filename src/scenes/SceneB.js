@@ -7,9 +7,12 @@ class SceneB extends Phaser.Scene{
     }
     init() {
     console.log('Escena B');
+    console.log("Salto inicial", this.salto);
     }
     create() {
-        this.scene.stop('SceneC');
+        //Musica
+        this.disparo = this.sound.add("disparo",{volume: 4});
+        this.picos1= this.sound.add("picos",{volume: 4});
          ////////////////////////////////////FONDO/////////////////////////////////////////////////////////
         this.data.set('vidas',3);
         this.data.set('balas', 0);
@@ -84,12 +87,12 @@ class SceneB extends Phaser.Scene{
             this.cursor_lvl1.up.on('down', () => {
             this.Nio_lvl1.body.setVelocityY(-300);
             this.salto=this.salto+1;
-            // console.log("This salto= "+this.salto);
+            console.log("This salto= "+this.salto);
             });
         }else{
             this.cursor_lvl1.up.on('down', () => {
             this.Nio_lvl1.body.setVelocityY(0);
-            // console.log("This salto= "+this.salto);
+            console.log("This salto= "+this.salto);
             });
         }
         
@@ -117,7 +120,10 @@ class SceneB extends Phaser.Scene{
             console.log("Cuidado con los picos");
             this.data.list.vidas -= 1;
             console.log(this.data.list);
-            this.Nio_lvl1.setPosition(30,430);
+            this.Nio_lvl1.setPosition(20,440);
+            // setTimeout(() => {
+            //     this.Nio_lvl1.setPosition(30,430);;
+            //     }, 800);
 
             //Actualizacion del cartel de vidas
             const container_lvl1 = this.add.container(100, 30).setScale(0.08); //su origen es 0.5
@@ -136,14 +142,7 @@ class SceneB extends Phaser.Scene{
             setTimeout(() => {
                 this.Nio_lvl1.clearTint();
                 }, 1300);
-
-            //GameOver
-            //  if(this.data.get('vidas')==0){
-            //     console.log("Game Over");
-            //     this.scene.start('SceneA');
-            //     this.scene.restart('SceneB');
-    
-            //   }
+            this.picos1.play();
           }
          this.physics.add.collider(this.Nio_lvl1,this.grupo2_lvl1,choquePicos,null,this);
 
@@ -160,6 +159,7 @@ class SceneB extends Phaser.Scene{
                 //limiteBalas++;
                 //console.log(limiteBalas);
                 //this.physics.add.collider(this.bala_lvl1, this., BalaMorfeo, null, this);
+                this.disparo.play();
             }
             else if(this.Nio_lvl1.FlipX != 0) {
                 this.cursor_lvl1.space.on('down', () => {
@@ -168,7 +168,8 @@ class SceneB extends Phaser.Scene{
                     this.bala_lvl1.body.setAllowGravity(false); 
                     this.data.list.balas += 1; 
                     console.log(this.data.list.balas);
-                    console.log("disparando al reves")
+                    console.log("disparando al reves");
+                    this.disparo.play();
             });
              
             };
@@ -227,48 +228,12 @@ class SceneB extends Phaser.Scene{
                });
         }
 
-        ///////////////////CAIDA//////////////////////////////////////////////////    
-        if(this.Nio_lvl1.body.velocity.y >= 500)
-        {
-           // console.log(this.Nio.body.velocity.y)
-                this.fuerte=1;
-            //    console.log(this.fuerte);
-            
-        }
-
-        if(this.Nio_lvl1.body.touching.down && this.fuerte == 1)
-        {
-            console.log("Auch!")
-            this.Nio_lvl1.setTint(0xff0000)
-            setTimeout(() => {
-                this.Nio_lvl1.clearTint();
-                }, 1300);
-            console.log("Caida");
-
-            this.data.list.vidas -= 1;
-
-            //Actualizacion del cartel de vidas
-             const container_lvl1 = this.add.container(100, 30).setScale(0.08); //su origen es 0.5
-             this.contenedor_lvl1 = this.add.image(0, 0, 'contenedor'); //su origen es 0.5
-             this.texto_lvl1 = this.add.text(250,-100,`x ${this.data.get('vidas')}`,{
-             fontSize: 250}); // su origen es 0,0
-             this.head_lvl1 = this.add.image(-500, 50, 'head').setScale(15); //su origen es 0.5
-             this.cora_lvl1 = this.add.image(0, 0, 'coraz').setScale(5);
-             container_lvl1.add([
-             this.contenedor_lvl1,
-             this.head_lvl1,
-             this.cora_lvl1,
-             this.texto_lvl1]);
-
-            this.fuerte = 0;
-        }
-
         //GameOver
         if(this.data.get('vidas')==0){
         console.log("Game Over");
         this.salto=0;
+        this.scene.pause('SceneB');
         this.scene.start('SceneGO');
-        this.scene.stop('SceneB');
             
                       }
 

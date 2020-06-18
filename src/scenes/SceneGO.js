@@ -36,8 +36,8 @@ class SceneGO extends Phaser.Scene{
                 if(GameObject.name != "")
                 if(GameObject.name == "Back"){
                     //this.boton.play();
-                    this.scene.start('SceneA');
                     this.scene.stop('SceneGO');
+                    this.scene.start('SceneA');
                 }
             });
 

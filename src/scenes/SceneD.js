@@ -11,6 +11,13 @@ class SceneD extends Phaser.Scene{
     console.log('Escena D');
     }
     create(dato,dato2) {
+        //Musica
+        this.disparo3 = this.sound.add("disparo",{volume: 4});
+        this.caida2 = this.sound.add("caida",{volume: 4});
+        this.picos2= this.sound.add("picos",{volume: 4});
+        this.explosion = this.sound.add("explosion",{volume: 4});
+        this.choque2 = this.sound.add("picos",{volume: 4});
+        this.portalS2 = this.sound.add("portal",{volume: 4});
         this.dato_lvl1_3 = dato;
         this.dato2_lvl1_3 = dato2;
         this.add.image(0, 0, 'cielo3').setScale(0.55, 0.7);
@@ -155,6 +162,7 @@ class SceneD extends Phaser.Scene{
                 dato2+= 1; 
               console.log(dato2);
               console.log("disparando")
+              this.disparo3.play();
               //limiteBalas++;
               //console.log(limiteBalas);
               //this.physics.add.collider(this.bala_lvl1, this., BalaMorfeo, null, this);
@@ -167,6 +175,7 @@ class SceneD extends Phaser.Scene{
                   dato2 += 1; 
                   console.log(dato2);
                   console.log("disparando al reves")
+                  this.disparo3.play();
           });
            
           };
@@ -212,6 +221,8 @@ class SceneD extends Phaser.Scene{
             }, 1300);
         this.piso_lvl1.destroy();
 
+        this.explosion.play();
+
         this.picos=this.add.image(90,530,'picos').setScale(0.4);
         this.physics.add.existing(this.picos, false);
         this.picos.body.setCollideWorldBounds(true);
@@ -237,6 +248,7 @@ class SceneD extends Phaser.Scene{
             setTimeout(() => {
                 this.Nio_lvl1_3.clearTint();
                 }, 1300);
+            this.choque2.play();
             
             this.Nio_lvl1_3.setPosition(10,440);
 
@@ -259,6 +271,7 @@ class SceneD extends Phaser.Scene{
             console.log("Siguiente parte");
             this.scene.start('SceneE',this.dato_lvl1_3,this.dato2_lvl1_3);
             this.scene.stop('SceneD');
+            this.portalS2.play();
           }
           this.physics.add.collider(this.Nio_lvl1_3,this.sigLvl2,cambioSceneLvl2,null,this);
  
@@ -360,6 +373,7 @@ class SceneD extends Phaser.Scene{
 
         if(this.Nio_lvl1_3.body.touching.down && this.fuerte == 1)
         {
+            this.caida2.play();
             console.log("Auch!")
             this.Nio_lvl1_3.setTint(0xff0000)
             setTimeout(() => {

@@ -18,6 +18,10 @@ class SceneE extends Phaser.Scene{
     
     }
     create(dato,dato2,) {
+        //Musica
+        this.disparo4 = this.sound.add("disparo",{volume: 4});
+        this.caida3 = this.sound.add("caida",{volume: 4});
+        this.choque3 = this.sound.add("picos",{volume: 4});
         
 //////////////////////////////////////DATOS//////////////////////////////////////////////////////////
         // this.scene.launch('SceneF')
@@ -47,6 +51,24 @@ class SceneE extends Phaser.Scene{
              muros.body.immovable=true;
              muros.body.moves=false;
              } );
+        
+        this.grupo2 = this.physics.add.group();
+        this.grupo2.create(4,100,"tubo2").setScale(0.2);
+        this.grupo2.create(4,250,"tubo2").setScale(0.2);
+        this.grupo2.create(4,370,"tubo2").setScale(0.2);
+        this.grupo2.create(4,470,"tubo2").setScale(0.2);
+        this.grupo2.create(700,470,"tubo").setScale(0.2);
+        this.grupo2.create(700,100,"tubo").setScale(0.2);
+        this.grupo2.create(700,250,"tubo").setScale(0.2);
+        this.grupo2.create(700,370,"tubo").setScale(0.2);
+        this.grupo2.create(700,470,"tubo").setScale(0.2);
+
+        this.grupo2.children.iterate( (muros2) => {
+            muros2.body.setAllowGravity(false);
+            muros2.body.setCollideWorldBounds(true);
+            muros2.body.immovable=true;
+            muros2.body.moves=false;
+            } );
  
 ////////////////////////////////////PERSONAJE////////////////////////////////////////////////////
          
@@ -158,7 +180,7 @@ class SceneE extends Phaser.Scene{
         });
         }else{
             this.cursor.up.on('down', () => {
-            this.Nio.setVelocityY(0);
+            this.Nio.body.setVelocityY(0);
             console.log("This salto= "+this.sal);
             });
         }
@@ -193,6 +215,7 @@ class SceneE extends Phaser.Scene{
             console.log("disparando")
             //limiteBalas++;
             //console.log(limiteBalas);
+            this.disparo4.play();
             this.physics.add.collider(this.bala, this.Morfeo, BalaMorfeo, null, this);
         }
         else if(this.Nio.FlipX != 0) {
@@ -203,6 +226,8 @@ class SceneE extends Phaser.Scene{
                 dato2 += 1; 
                 console.log(dato2);
                 console.log("disparando al reves")
+                this.disparo4.play();
+                this.physics.add.collider(this.bala, this.Morfeo, BalaMorfeo, null, this);
         });
          
         };
@@ -212,10 +237,56 @@ class SceneE extends Phaser.Scene{
    
     /////////////////////////EVENTOS///////////////////////////////////////////////////////////
     this.physics.add.collider(this.Nio,this.grupo);
-
+    
     this.physics.add.collider(this.Nio, this.Morfeo, ChoqueMorfeo, null, this);
     this.physics.add.overlap(this.Nio, this.coraa, tomar , null, this);
     
+    var BulletP = function (game, key) {
+
+        Phaser.Sprite.call(this, game, 0, 0, key);
+    
+        this.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
+    
+        this.anchor.set(0.5);
+    
+        this.checkWorldBounds = true;
+        this.outOfBoundsKill = true;
+        this.exists = false;
+    
+        this.tracking = false;
+        this.scaleSpeed = 0;
+    
+    };
+
+    Weapon.SingleBullet = function (game) {
+
+        Phaser.Group.call(this, game, game.world, 'Single Bullet', false, true, Phaser.Physics.ARCADE);
+    
+        this.nextFire = 0;
+        this.bulletSpeed = 600;
+        this.fireRate = 100;
+    
+        for (var i = 0; i < 64; i++)
+        {
+            this.add(new Bullet(game, 'bullet5'), true);
+        }
+    
+        return this;
+    
+    };
+
+    Weapon.SingleBullet.prototype.fire = function (source) {
+
+        if (this.game.time.time < this.nextFire) { return; }
+    
+        var x = source.x + 10;
+        var y = source.y + 10;
+    
+        this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
+    
+        this.nextFire = this.game.time.time + this.fireRate;
+    
+    };
 
   
     function BalaMorfeo (bala, Morfeo)
@@ -223,7 +294,7 @@ class SceneE extends Phaser.Scene{
         Morfeo.setTint(0xff0000);
         setTimeout(() => {
             this.Morfeo.clearTint();
-            }, 1300);
+            }, 100);
          console.log("Morfeo recibió daño");
          //this.registry.events.emit('daño', 1); 
          this.bala.destroy();  
@@ -252,6 +323,7 @@ class SceneE extends Phaser.Scene{
                 }, 1300);
             console.log("Colisionaron");
             this.registry.events.emit('daño', 1);   
+            this.choque3.play();
            
         }
 
@@ -265,7 +337,6 @@ class SceneE extends Phaser.Scene{
         this.cameras.main.startFollow(this.Nio, true, 0.09, 0.09);
         this.cameras.main.setZoom(1.5);
 
-        // this.data.set('vidas', 5);
         const container = this.add.container(100, 30).setScale(0.08); 
         this.contenedor = this.add.image(0, 0, 'contenedor'); 
         this.texto = this.add.text(250,-100,'x '+ this.dato_lvl2,{
@@ -305,7 +376,7 @@ class SceneE extends Phaser.Scene{
                    // console.log(this.Nio.body.velocity.y)
                         this.fuerte=1;
                     //    console.log(this.fuerte);
-                    
+                    this.caida3.play();
                 }
 
                 if(this.Nio.body.touching.down && this.fuerte == 1)
