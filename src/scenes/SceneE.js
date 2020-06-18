@@ -11,6 +11,8 @@ class SceneE extends Phaser.Scene{
     this.dato2_lvl2;
     this.fuerte=0;
     this.Nio;
+    
+    
 
     }
     init() {
@@ -29,6 +31,11 @@ class SceneE extends Phaser.Scene{
         this.dato_lvl2 = dato;
         this.dato2_lvl2 = dato2;
         this.data.set('curaciones', 1);
+        var sen1 = 0;
+        var i = 0;
+        var vivo = 0;
+        
+        
         //this.data.set('monstruos', 1)    
  ////////////////////////////////////FONDO/////////////////////////////////////////////////////////
        
@@ -80,6 +87,8 @@ class SceneE extends Phaser.Scene{
          this.Nio.body.setCollideWorldBounds(true);
          this.Nio.body.setSize(20, 40);
          this.Nio.body.setOffset(17, 0);
+         
+      
 
          /////MORFEO
         // this.Morfeo = this.add.sprite(350,100,'Morfeo').setScale(1.3);
@@ -146,9 +155,14 @@ class SceneE extends Phaser.Scene{
          
          //Movimiento a la derecha
          this.cursor.right.on('down', () => {
+            sen1 = 0;
+            this.sen2  = 1;
+            i = 0;
+            console.log(i,sen1,);
              this.Nio.body.setVelocityX(800);
              this.Nio.flipX=0;
              this.Nio.body.setOffset(17, 0);
+            
              //sentido = 0;
             
          });
@@ -192,47 +206,98 @@ class SceneE extends Phaser.Scene{
         this.physics.add.collider(this.Nio,this.grupo,sal,null,this);
          
          //Movimiento izquierda
-         this.cursor.left.on('down', () => {   
+         this.cursor.left.on('down', () => {
+            sen1 = 1;
+            this.sen2  = 0;   
+            i = 1;
+            console.log(i,sen1);
              this.Nio.body.setVelocityX(-800);
              this.Nio.flipX=1;
              this.Nio.body.setOffset(3, 0);
-            // sentido = 1;
+             
          });
  
  
          this.Nio.anims.play('mov');
          //this.Morfeo.anims.play('mov');
 //////////////////////////////////////////DISPARO///////////////////////////////////////////
-
-    this.cursor.space.on('down', () => {
-        if (this.Nio.flipX == 0)
-        {
-            this.bala = this.physics.add.sprite(this.Nio.x,this.Nio.y,'disparo').setScale(0.5);
-            this.bala.body.setVelocityX(800);
-            this.bala.body.setAllowGravity(false); 
-            dato2 += 1; 
-            console.log(dato2);
-            console.log("disparando")
-            //limiteBalas++;
-            //console.log(limiteBalas);
-            this.disparo4.play();
-            this.physics.add.collider(this.bala, this.Morfeo, BalaMorfeo, null, this);
-        }
-        else if(this.Nio.FlipX != 0) {
-            this.cursor.space.on('down', () => {
-                this.bala = this.physics.add.sprite(this.Nio.x,this.Nio.y,'disparo').setScale(0.5);
-                this.bala.body.setVelocityX(-800);
-                this.bala.body.setAllowGravity(false); 
-                dato2 += 1; 
-                console.log(dato2);
-                console.log("disparando al reves")
-                this.disparo4.play();
-                this.physics.add.collider(this.bala, this.Morfeo, BalaMorfeo, null, this);
-        });
-         
-        };
     
- });
+    this.cursor.space.on('down', () => {
+        if(vivo == 0)
+        {
+            if(i == 0)
+            {
+                if (sen1 == 0)
+                {
+                    this.bala = this.physics.add.sprite(this.Nio.x,this.Nio.y,'disparo').setScale(0.5);
+                    this.bala.body.setVelocityX(800);
+                    this.bala.body.setAllowGravity(false); 
+                   // dato2 += 1; 
+                    //console.log(dato2);
+                    //console.log("disparando")
+                    //limiteBalas++;
+                    //console.log(limiteBalas);
+                    this.disparo4.play();
+                    vivo = 1;
+                    this.physics.add.collider(this.bala, this.Morfeo, BalaMorfeo, null, this);
+                    BalaMundo(this.bala);
+                }
+            }
+            else if (i == 1)
+                {
+                if (sen1 == 1){
+                        this.bala = this.physics.add.sprite(this.Nio.x,this.Nio.y,'disparo').setScale(0.5);
+                        this.bala.body.setVelocityX(-800);
+                        this.bala.body.setAllowGravity(false); 
+                       // dato2 += 1; 
+                        //console.log(dato2);
+                       // console.log("disparando al reves")
+                        this.disparo4.play();
+                        vivo = 1;
+                        this.physics.add.collider(this.bala, this.Morfeo, BalaMorfeo, null, this);
+                        BalaMundo(this.bala);
+                            }                         
+                }
+        }
+    
+        else if(vivo == 1)
+        {
+            console.log("hay una bala, no se puede disparar")
+        }
+        
+            
+             
+                                              
+        
+    
+                            });
+        
+    //////////////////////////////////////////////////////////////////////
+    function BalaMorfeo (bala, Morfeo)
+    {
+    Morfeo.setTint(0xff0000);
+    setTimeout(() => {
+        this.Morfeo.clearTint();
+        }, 100);
+     console.log("Morfeo recibió daño");
+     //this.registry.events.emit('daño', 1); 
+     this.bala.destroy();  
+     vivo = 0;
+       
+    }
+
+    function BalaMundo (bala)
+    {
+    
+    setTimeout(() => {
+        console.log("Chocó con el mundo");
+        //this.registry.events.emit('daño', 1); 
+        bala.destroy();  
+        vivo = 0;
+        }, 800);
+     
+       
+    }
 
    
     /////////////////////////EVENTOS///////////////////////////////////////////////////////////
@@ -241,65 +306,8 @@ class SceneE extends Phaser.Scene{
     this.physics.add.collider(this.Nio, this.Morfeo, ChoqueMorfeo, null, this);
     this.physics.add.overlap(this.Nio, this.coraa, tomar , null, this);
     
-    var BulletP = function (game, key) {
-
-        Phaser.Sprite.call(this, game, 0, 0, key);
     
-        this.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
-    
-        this.anchor.set(0.5);
-    
-        this.checkWorldBounds = true;
-        this.outOfBoundsKill = true;
-        this.exists = false;
-    
-        this.tracking = false;
-        this.scaleSpeed = 0;
-    
-    };
-
-    Weapon.SingleBullet = function (game) {
-
-        Phaser.Group.call(this, game, game.world, 'Single Bullet', false, true, Phaser.Physics.ARCADE);
-    
-        this.nextFire = 0;
-        this.bulletSpeed = 600;
-        this.fireRate = 100;
-    
-        for (var i = 0; i < 64; i++)
-        {
-            this.add(new Bullet(game, 'bullet5'), true);
-        }
-    
-        return this;
-    
-    };
-
-    Weapon.SingleBullet.prototype.fire = function (source) {
-
-        if (this.game.time.time < this.nextFire) { return; }
-    
-        var x = source.x + 10;
-        var y = source.y + 10;
-    
-        this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
-    
-        this.nextFire = this.game.time.time + this.fireRate;
-    
-    };
-
-  
-    function BalaMorfeo (bala, Morfeo)
-        {
-        Morfeo.setTint(0xff0000);
-        setTimeout(() => {
-            this.Morfeo.clearTint();
-            }, 100);
-         console.log("Morfeo recibió daño");
-         //this.registry.events.emit('daño', 1); 
-         this.bala.destroy();  
-           
-        }
+   
 
     function ChoqueMorfeo (Nio, Morfeo)
         {
@@ -406,13 +414,18 @@ class SceneE extends Phaser.Scene{
 
                     this.fuerte = 0;
                 }
+////////////////////////////////////////////////////////////////////////////////////////////
+            
+     
 
-                if(this.dato_lvl2==0){
-                    console.log("Game Over");
-                    this.scene.start('SceneGO');
-                    this.scene.stop('SceneE');
+    
+
+        if(this.dato_lvl2==0){
+        console.log("Game Over");
+        this.scene.start('SceneGO');
+        this.scene.stop('SceneE');
                         
-                                  }
+     }
 
                
 
