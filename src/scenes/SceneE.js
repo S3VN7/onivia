@@ -10,7 +10,7 @@ class SceneE extends Phaser.Scene{
     this.dato_lvl2;
     this.dato2_lvl2;
     this.fuerte=0;
-    this.Nio;
+ 
     
     
 
@@ -145,7 +145,10 @@ class SceneE extends Phaser.Scene{
 
         setTimeout(() => {
                  this.coraa.anims.play('blink')
-                 }, 6000);
+                 }, 15000);
+         setTimeout(() => {
+                this.coraa.destroy()
+            }, 20000);
  
   /////////////////////////////CONTROLES///////////////////////////////////////////////////////////
          this.cursor = this.input.keyboard.createCursorKeys();
@@ -156,7 +159,6 @@ class SceneE extends Phaser.Scene{
          //Movimiento a la derecha
          this.cursor.right.on('down', () => {
             sen1 = 0;
-            this.sen2  = 1;
             i = 0;
             console.log(i,sen1,);
              this.Nio.body.setVelocityX(800);
@@ -208,7 +210,6 @@ class SceneE extends Phaser.Scene{
          //Movimiento izquierda
          this.cursor.left.on('down', () => {
             sen1 = 1;
-            this.sen2  = 0;   
             i = 1;
             console.log(i,sen1);
              this.Nio.body.setVelocityX(-800);
@@ -259,20 +260,13 @@ class SceneE extends Phaser.Scene{
                             }                         
                 }
         }
-    
         else if(vivo == 1)
         {
             console.log("hay una bala, no se puede disparar")
         }
+        });
         
-            
-             
-                                              
-        
-    
-                            });
-        
-    //////////////////////////////////////////////////////////////////////
+    /////////////////////////////FUNCIONES BALAS/////////////////////////////////////////
     function BalaMorfeo (bala, Morfeo)
     {
     Morfeo.setTint(0xff0000);
@@ -290,7 +284,7 @@ class SceneE extends Phaser.Scene{
     {
     
     setTimeout(() => {
-        console.log("Chocó con el mundo");
+        console.log("La bala murió :(");
         //this.registry.events.emit('daño', 1); 
         bala.destroy();  
         vivo = 0;
@@ -338,7 +332,24 @@ class SceneE extends Phaser.Scene{
     function tomar(Nio, coraa){
         coraa.destroy();
         console.log("tomó el objeto")
-        this.registry.events.emit('curar', 1);
+        //this.registry.events.emit('curar', 1);
+        this.dato_lvl2+=1;
+        const container = this.add.container(100, 30).setScale(0.08); //su origen es 0.5
+        this.contenedor = this.add.image(0, 0, 'contenedor'); //su origen es 0.5
+        this.texto = this.add.text(250,-100,`x ${this.dato_lvl2}`,{
+            fontSize: 250}); // su origen es 0,0
+        this.head = this.add.image(-500, 50, 'head').setScale(15); //su origen es 0.5
+        this.cora = this.add.image(0, 0, 'coraz').setScale(5);
+        container.add([
+            this.contenedor,
+            this.head,
+            this.cora,
+            this.texto]);
+
+        Nio.setTint(0x1405f6);
+            setTimeout(() => {
+                this.Nio.clearTint();
+            }, 600);
         };
 
         this.cameras.main.setBounds(0, 0, 704, 540);
