@@ -27,8 +27,9 @@ class SceneC extends Phaser.Scene{
         var i = 0;
         var vivo = 0;
          ////////////////////////////////////FONDO/////////////////////////////////////////////////////////
-        this.add.image(0, 0, 'cielo3').setScale(0.55, 0.7);
- 
+        //this.add.image(0, 0, 'cielo3').setScale(0.55, 0.7);
+        this.add.image(0, 0, 'nivel').setScale(1.4,1.84).setOrigin(0);
+        
         this.grupo_lvl1_2 = this.physics.add.group();
         this.grupo2_lvl1_2 = this.physics.add.group();
         this.grupo3_lvl1_2 = this.physics.add.group();

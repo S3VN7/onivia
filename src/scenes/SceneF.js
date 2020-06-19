@@ -25,8 +25,8 @@ class SceneF extends Phaser.Scene{
                            });
              this.registry.events.on('m2', (m2) => {
             console.log('Cambio música lvl 1');
-            this.m2.play();
             this.m1.stop();
+            this.m2.play();
             this.m3.stop();
                            });
             this.registry.events.on('m3', (m3) => {

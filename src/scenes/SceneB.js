@@ -23,7 +23,7 @@ class SceneB extends Phaser.Scene{
         var vivo = 0;
         console.log(this.data.list);
 
-         this.add.image(0, 0, 'cielo3').setScale(0.55, 0.7);
+         this.add.image(0, 0, 'nivel').setScale(1.4,1.84).setOrigin(0);
 
          this.grupo_lvl1 = this.physics.add.group();
          this.grupo2_lvl1 = this.physics.add.group();

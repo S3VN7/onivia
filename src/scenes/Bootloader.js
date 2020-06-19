@@ -26,6 +26,7 @@ class Bootloader extends Phaser.Scene{
         this.load.audio("burbuja","burbuja.mp3");
         this.load.audio("rayo","rayo.mp3");
         this.load.audio("menulvls","menulvls.ogg");
+        this.load.image("Menu","Menu.jpg");
 
         //lvl1
         this.load.image(['muro','esquinaIzq','esquinaDer','flotante','hielo','picos','sue','lvl1_2','balaLvl1','bala2','Escudo']);
@@ -34,6 +35,7 @@ class Bootloader extends Phaser.Scene{
         this.load.image('tubo2','tuboBalas2.png');
         this.load.atlas('portal','portal_PP3/portal.png','portal_PP3/portal_atlas.json');
         this.load.atlas('night','night_PP3/night.png','night_PP3/night_atlas.json');
+        this.load.image("nivel","nivel1.jpg");
 
         //lvl2
         this.load.image(['suelo', 'pared',]);
@@ -66,6 +68,8 @@ class Bootloader extends Phaser.Scene{
         this.load.audio("m1","m11.mp3");
         this.load.audio("m2","m21.mp3");
         this.load.audio("m3","m31.mp3");
+        this.load.audio("angelical","angelical.mp3");
+        this.load.audio("cambio","cambio.mp3");
         
     }
     create() {
@@ -75,17 +79,21 @@ class Bootloader extends Phaser.Scene{
         this.comenzar = this.add.image(350,450,'comenzar').setScale(0.2).setInteractive();
         this.comenzar.name="comenzar";
         this.boton = this.sound.add("boton",{volume: 4});
+        //this.m1 = this.sound.add("m1",{volume: 4});
+        //this.m1.play();
         //this.musica1 = this.sound.add("musica1",{volume: 4});
        // this.musica1.play();
         //this.musica2 = this.sound.add("musica2",{volume: 4});
         //this.musica2.play();
-        this.burbuja = this.sound.add("burbuja",{volume: 4});
+        //this.burbuja = this.sound.add("burbuja",{volume: 4});
+        this.angelical = this.sound.add("angelical",{volume: 4});
         const eventos = Phaser.Input.Events;
         const teclado = Phaser.Input.Keyboard;
         
         this.comenzar.on(eventos.POINTER_MOVE, (evento) => {
             this.comenzar.setScale(0.17);
-            this.burbuja.play();
+            //this.burbuja.play();
+            this.angelical.play();
             });
 
         this.comenzar.on(eventos.POINTER_OUT, (evento) => {

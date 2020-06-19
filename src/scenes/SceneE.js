@@ -41,7 +41,7 @@ class SceneE extends Phaser.Scene{
         //this.data.set('monstruos', 1)    
  ////////////////////////////////////FONDO/////////////////////////////////////////////////////////
        
-         this.fondo = this.add.image(0, 0, 'fondonoche').setScale(1.2,1.67).setOrigin(0);
+         this.fondo = this.add.image(0, 0, 'fondonoche').setScale(1.2,1.68).setOrigin(0);
 
          this.grupo = this.physics.add.group();
          this.grupo.create(379, 306, 'escalon');

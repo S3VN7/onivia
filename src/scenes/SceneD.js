@@ -26,7 +26,8 @@ class SceneD extends Phaser.Scene{
         var i = 0;
         var vivo = 0;
 
-        this.add.image(0, 0, 'cielo3').setScale(0.55, 0.7);
+        //this.add.image(0, 0, 'cielo3').setScale(0.55, 0.7);
+        this.add.image(0, 0, 'nivel').setScale(1.4,1.84).setOrigin(0);
 
         this.grupo_lvl1_3 = this.physics.add.group();
 
