@@ -16,7 +16,7 @@ class SceneB extends Phaser.Scene{
         this.picos1= this.sound.add("picos",{volume: 4});
         this.salto1 = this.sound.add("salto",{volume: 4});
          ////////////////////////////////////FONDO/////////////////////////////////////////////////////////
-        this.data.set('vidas',4);
+        this.data.set('vidas',5);
         this.data.set('balas', 0);
         var sen1 = 0;
         var i = 0;

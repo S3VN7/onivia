@@ -77,6 +77,10 @@ class Bootloader extends Phaser.Scene{
         this.load.audio("angelical","angelical.mp3");
         this.load.audio("cambio","cambio.mp3");
         this.load.audio("win","win.mp3");
+
+        //Creditos
+        this.load.image("creditos", "creditos.png");
+        this.load.audio("creditosM", "creditosM.mp3");
         
     }
     create() {

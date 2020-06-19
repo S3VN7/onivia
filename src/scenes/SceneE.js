@@ -1,5 +1,3 @@
-
-
 class SceneE extends Phaser.Scene{
     constructor(){
         
@@ -376,10 +374,14 @@ class SceneE extends Phaser.Scene{
         if(this.data.list.morfeo==0){
             this.Morfeo.destroy();
             this.win.play();
+            this.dato_lvl2+=2;
             setTimeout(() => {
                 this.scene.stop('SceneE');
                 //this.scene.stop('SceneF');
                 this.registry.events.emit('Win', 1); 
+                setTimeout(() => {
+                    this.scene.start('SceneG');
+                    }, 6000);
                 }, 3000);
 
         }

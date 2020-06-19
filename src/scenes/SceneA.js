@@ -65,7 +65,7 @@ class SceneA extends Phaser.Scene{
                 this.nivel2.setVisible(0);
                 this.regreso.setVisible(0);
                 //this.musicaLvls.stop();
-                this.scene.start('SceneE');
+                this.scene.start('SceneB');
                 //this.registry.events.emit('Win');
                // this.scene.launch('SceneF');
                 setTimeout(() => {
@@ -79,7 +79,6 @@ class SceneA extends Phaser.Scene{
                 this.nivel1.setVisible(0);
                 this.nivel2.setVisible(0);
                 this.regreso.setVisible(0);
-                this.musicaLvls.stop();
                 this.scene.start('Bootloader');
                 this.scene.stop('SceneA');
             }
