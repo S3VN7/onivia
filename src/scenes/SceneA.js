@@ -9,8 +9,9 @@ class SceneA extends Phaser.Scene{
         console.log('Escena A');
     }
     create() {
-        this.musicaLvls = this.sound.add("menulvls",{volume: 4});
-        this.musicaLvls.play();
+        // this.musicaLvls = this.sound.add("menulvls",{volume: 4});
+        // this.musicaLvls.play();
+        //this.registry.events.emit('m1');
         this.fondolvls= this.add.image(230, 100, 'fondolvls').setScale(2);
         this.nivel1= this.add.image(80, 80, 'lvl1').setScale(0.02).setInteractive();
         this.nivel1.name="nivel1";
@@ -48,7 +49,7 @@ class SceneA extends Phaser.Scene{
                 this.nivel1.setVisible(0);
                 this.nivel2.setVisible(0);
                 this.regreso.setVisible(0);
-                this.musicaLvls.stop();
+               // this.musicaLvls.stop();
                 this.scene.start('SceneB');
                 this.scene.stop('SceneA');
             }
@@ -57,7 +58,7 @@ class SceneA extends Phaser.Scene{
                 this.nivel1.setVisible(0);
                 this.nivel2.setVisible(0);
                 this.regreso.setVisible(0);
-                this.musicaLvls.stop();
+                //this.musicaLvls.stop();
                 this.scene.start('SceneE');
                // this.scene.launch('SceneF');
                 setTimeout(() => {

@@ -11,8 +11,10 @@ class SceneB extends Phaser.Scene{
     }
     create() {
         //Musica
+        this.registry.events.emit('m2');
         this.disparo = this.sound.add("disparo",{volume: 4});
         this.picos1= this.sound.add("picos",{volume: 4});
+        this.salto1 = this.sound.add("salto",{volume: 4});
          ////////////////////////////////////FONDO/////////////////////////////////////////////////////////
         this.data.set('vidas',3);
         this.data.set('balas', 0);
@@ -93,6 +95,7 @@ class SceneB extends Phaser.Scene{
             this.Nio_lvl1.body.setVelocityY(-300);
             this.salto=this.salto+1;
             console.log("This salto= "+this.salto);
+            this.salto1.play();
             });
         }else{
             this.cursor_lvl1.up.on('down', () => {

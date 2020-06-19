@@ -21,6 +21,8 @@ class SceneE extends Phaser.Scene{
     }
     create(dato,dato2,) {
         //Musica
+        this.registry.events.emit('m3');
+        this.salto4 = this.sound.add("salto",{volume: 5});
         this.disparo4 = this.sound.add("disparo",{volume: 4});
         this.caida3 = this.sound.add("caida",{volume: 4});
         this.choque3 = this.sound.add("picos",{volume: 4});
@@ -39,18 +41,20 @@ class SceneE extends Phaser.Scene{
         //this.data.set('monstruos', 1)    
  ////////////////////////////////////FONDO/////////////////////////////////////////////////////////
        
-         this.add.image(0, 0, 'cielo3').setScale(0.55, 0.7);
+         this.fondo = this.add.image(0, 0, 'fondonoche').setScale(1.2,1.67).setOrigin(0);
 
          this.grupo = this.physics.add.group();
+         this.grupo.create(379, 306, 'escalon');
+         this.grupo.create(325, 414, 'escalon');
          this.grupo.create(352, 522, 'suelo');
          this.grupo.create(304,360, "pared");
          this.grupo.create(400,360, "pared");
-         this.grupo.create(112,414,"Plataformas"); //plataforma izq abajo
-         this.grupo.create(176,306,"Plataformas"); //plataforma izq centro
-         this.grupo.create(112,176,"Plataformas"); //plataforma izq arriba
-         this.grupo.create(592,414,"Plataformas"); //plataforma der abajo
-         this.grupo.create(528,306,"Plataformas"); //plataforma der centro
-         this.grupo.create(592,176,"Plataformas"); //plataforma der arriba
+         this.grupo.create(112,414,"Plataformas").setScale(0.8); //plataforma izq abajo
+         this.grupo.create(176,306,"Plataformas").setScale(0.8); //plataforma izq centro
+         this.grupo.create(112,176,"Plataformas").setScale(0.8); //plataforma izq arriba
+         this.grupo.create(592,414,"Plataformas").setScale(0.8); //plataforma der abajo
+         this.grupo.create(528,306,"Plataformas").setScale(0.8); //plataforma der centro
+         this.grupo.create(592,176,"Plataformas").setScale(0.8); //plataforma der arriba
  
          this.grupo.children.iterate( (muros) => {
              muros.body.setAllowGravity(false);
@@ -80,7 +84,7 @@ class SceneE extends Phaser.Scene{
 ////////////////////////////////////PERSONAJE////////////////////////////////////////////////////
          
          /////NIO
-         this.Nio = this.add.sprite(200,100,'nio').setScale(1.3);
+         this.Nio = this.add.sprite(150,100,'nio').setScale(1.3);
          this.physics.add.existing(this.Nio);
          this.physics.add.existing(this.Nio, false);
          console.log(this.Nio.body);
@@ -185,16 +189,11 @@ class SceneE extends Phaser.Scene{
         this.Nio.body.setVelocityY(-300);
         this.sal=this.sal+1;
         console.log("This salto= "+this.sal);
-
-        if(this.Nio.velocityY >= 0)
-        {
-            this.ValYA = this.Nio.y;
-            console.log(this.ValYA);
-        }
-      
-                
+        this.salto4.play()
         });
-        }else{
+
+        }
+        else{
             this.cursor.up.on('down', () => {
             this.Nio.body.setVelocityY(0);
             console.log("This salto= "+this.sal);
@@ -352,9 +351,8 @@ class SceneE extends Phaser.Scene{
             }, 600);
         };
 
-        this.cameras.main.setBounds(0, 0, 704, 540);
-        this.cameras.main.startFollow(this.Nio, true, 0.09, 0.09);
-        this.cameras.main.setZoom(1.5);
+        
+
 
         const container = this.add.container(100, 30).setScale(0.08); 
         this.contenedor = this.add.image(0, 0, 'contenedor'); 
@@ -368,9 +366,15 @@ class SceneE extends Phaser.Scene{
             this.cora,
             this.texto]);
 
+        this.cameras.main.setBounds(0, 0, 704, 540);
+        this.cameras.main.startFollow(this.Nio, true, 0.09, 0.09);
+        this.cameras.main.setZoom(1.5);
+        
+
          const cameralvl2 =
           this.cameras.add(0, 0, 260, 80).setZoom(1.3);
           cameralvl2.ignore(this.Nio);
+         // cameralvl2.ignore(this.fondo);
           setTimeout( () => {
           cameralvl2.pan(this.container.x, this.container.y, 3000, 'Sine.easeInOut');
           }, 2000); 
@@ -435,7 +439,8 @@ class SceneE extends Phaser.Scene{
         console.log("Game Over");
         this.scene.start('SceneGO');
         this.scene.stop('SceneE');
-                        
+        
+        
      }
 
                

@@ -36,8 +36,10 @@ class Bootloader extends Phaser.Scene{
         this.load.atlas('night','night_PP3/night.png','night_PP3/night_atlas.json');
 
         //lvl2
-        this.load.image(['Plataformas', 'suelo', 'pared',]);
-        this.load.image("cielo3","cielo3.png");
+        this.load.image(['suelo', 'pared',]);
+        this.load.image("Plataformas","Plataformas2.png");
+        this.load.image("cielo3","Cielo3.png");
+        this.load.image("fondonoche","Fondo noche.png");
         this.load.atlas('nio','nio_PP3/nio.png','nio_PP3/nio_atlas.json');
         this.load.atlas('morfeo','morfeo_PP3/morfeo.png','morfeo_PP3/morfeo_atlas.json');
         this.load.image('Morfeo','Morfeo.png');
@@ -46,11 +48,12 @@ class Bootloader extends Phaser.Scene{
         this.load.image(['contenedor','head']);
         this.load.image("coraz","coraz.png");
         this.load.image('disparo','disparo.png');
+        this.load.image('escalon','escalon.png');
 
         //GameOverScene
         this.load.image("gameover","Game over.png");
         this.load.image("back","back.png");
-        this.load.image("skull","skull.png");
+        this.load.image("fondo","fondo.png");
 
         //Audio lvls
         this.load.audio("disparo","disparo.mp3");
@@ -59,19 +62,23 @@ class Bootloader extends Phaser.Scene{
         this.load.audio("enemigo","enemigo.mp3");
         this.load.audio("explosion","explosion.mp3");
         this.load.audio("portal","portal.mp3");
+        this.load.audio("salto","salto.mp3");
+        this.load.audio("m1","m11.mp3");
+        this.load.audio("m2","m21.mp3");
+        this.load.audio("m3","m31.mp3");
         
     }
     create() {
         console.log(this.scene.manager.scenes);
-
+        
         this.menu = this.add.image(320,270,'menu').setScale(0.6,0.75);
         this.comenzar = this.add.image(350,450,'comenzar').setScale(0.2).setInteractive();
         this.comenzar.name="comenzar";
         this.boton = this.sound.add("boton",{volume: 4});
-        this.musica1 = this.sound.add("musica1",{volume: 4});
-        this.musica1.play();
-        this.musica2 = this.sound.add("musica2",{volume: 4});
-        this.musica2.play();
+        //this.musica1 = this.sound.add("musica1",{volume: 4});
+       // this.musica1.play();
+        //this.musica2 = this.sound.add("musica2",{volume: 4});
+        //this.musica2.play();
         this.burbuja = this.sound.add("burbuja",{volume: 4});
         const eventos = Phaser.Input.Events;
         const teclado = Phaser.Input.Keyboard;
@@ -85,6 +92,10 @@ class Bootloader extends Phaser.Scene{
                 this.comenzar.setScale(0.2);
             });
 
+        this.scene.launch('SceneF');
+
+        
+
 
         this.input.on(eventos.GAMEOBJECT_DOWN, (pointer, GameObject) =>{
             if(GameObject.name != "")
@@ -92,8 +103,8 @@ class Bootloader extends Phaser.Scene{
                 this.comenzar.setVisible(0);
                 this.menu.setVisible(0);
                 this.boton.play();
-                this.musica1.stop();
-                this.musica2.stop();
+              //  this.musica1.stop();
+                //this.musica2.stop();
                 this.scene.start('SceneA');
             }
         });

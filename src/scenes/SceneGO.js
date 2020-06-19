@@ -15,9 +15,10 @@ class SceneGO extends Phaser.Scene{
     
     create()
     {
-        this.GameO = this.add.image(352, 170, 'gameover').setScale(2);
-        this.Skull = this.add.image(352, 370, 'skull').setScale(1.5);
-        this.Back = this.add.image(580, 480, 'back').setScale(1).setInteractive();
+        this.registry.events.emit('m1');
+        //this.GameO = this.add.image(352, 170, 'gameover').setScale(2);
+        this.fondo = this.add.image(0, 0, 'fondo').setScale(1).setOrigin(0);
+        this.Back = this.add.image(352, 460, 'back').setScale(1).setInteractive();
 
         this.Back.name= "Back";
        // this.botonGO = this.sound.add("boton",{volume: 4});
