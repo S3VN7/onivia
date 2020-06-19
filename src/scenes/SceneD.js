@@ -364,7 +364,6 @@ class SceneD extends Phaser.Scene{
         setTimeout(() => {
             this.Nio_lvl1_3.clearTint();
             }, 600);
-        //this.bala2_lvl1.destroy();
         this.cora_lvl1.destroy();
     }
     this.physics.add.collider(this.Nio_lvl1_3,this.cora_lvl1,activCora,null,this);

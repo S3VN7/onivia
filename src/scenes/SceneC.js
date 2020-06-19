@@ -62,30 +62,6 @@ class SceneC extends Phaser.Scene{
         this.grupo5_lvl1_2.create(200,250, 'hielo').setScale(0.01);
         this.grupo5_lvl1_2.create(200,350, 'hielo').setScale(0.01);
         this.grupo5_lvl1_2.create(200,450, 'hielo').setScale(0.01);
-
-        //this.sigLvl=this.add.image(660,420,'lvl1_2').setScale(0.7);
-        this.sigLvl=this.add.sprite(660,420,'portal').setScale(0.7)//setScrollFactor(1);
-        this.physics.add.existing(this.sigLvl, false);
-        this.sigLvl.body.setCollideWorldBounds(true);
-        this.sigLvl.body.immovable=true;
-        this.sigLvl.body.moves=false;
-        this.sigLvl.setVisible(0);
-        
-        //this.sigLvl.body.setSize(30,30);
-
-        this.anims.create({
-            key: 'portal1',
-            frames: this.anims.generateFrameNames('portal', {
-            prefix: 'lvl1_2_',
-            start: 0,
-            end: 10
-            }),
-            repeat: -1,
-            frameRate: 12
-            });
-        
-        this.sigLvl.anims.play('portal1');
-          
   
           this.grupo_lvl1_2.children.iterate( (muros_lvl1_2) => {
               muros_lvl1_2.body.setCollideWorldBounds(true);
@@ -299,7 +275,6 @@ class SceneC extends Phaser.Scene{
             this.scene.start('SceneD',this.dato_lvl1_2,this.dato2_lvl1_2);
             this.scene.stop('SceneC');
           }
-          this.physics.add.collider(this.Nio_lvl1_2,this.sigLvl,cambioScene2,null,this);
 
           //Colisiones con enemigos
           function choqueEnemigo(Nio_lvl1_2, night2){
@@ -321,56 +296,15 @@ class SceneC extends Phaser.Scene{
                 this.Nio_lvl1_2.clearTint();
                 }, 600);
             this.choque.play();
+            this.Nio_lvl1_2.setPosition(10,100);
           }
           this.physics.add.collider(this.Nio_lvl1_2,this.night2,choqueEnemigo,null,this);
+          this.physics.add.collider(this.Nio_lvl1_2,this.night3,choqueEnemigo,null,this);
+          this.physics.add.collider(this.Nio_lvl1_2,this.night,choqueEnemigo,null,this);
 
-          function choqueEnemigo2(Nio_lvl1_2, night3){
-            this.dato_lvl1_2-=1;
-            const container_lvl1_2 = this.add.container(100, 30).setScale(0.08); //su origen es 0.5
-            this.contenedor_lvl1_2 = this.add.image(0, 0, 'contenedor'); //su origen es 0.5
-            this.texto_lvl1_2 = this.add.text(250,-100,`x ${this.dato_lvl1_2}`,{
-            fontSize: 250}); // su origen es 0,0
-            this.head_lvl1_2 = this.add.image(-500, 50, 'head').setScale(15); //su origen es 0.5
-            this.cora_lvl1_2 = this.add.image(0, 0, 'coraz').setScale(5);
-            container_lvl1_2.add([
-                this.contenedor_lvl1_2,
-                this.head_lvl1_2,
-                this.cora_lvl1_2,
-                this.texto_lvl1_2]);
-
-            this.Nio_lvl1_2.setTint(0xff0000)
-            setTimeout(() => {
-                this.Nio_lvl1_2.clearTint();
-                }, 600);
-            this.choque.play();
-          }
-          this.physics.add.collider(this.Nio_lvl1_2,this.night3,choqueEnemigo2,null,this);
-
-          function choqueEnemigo3(Nio_lvl1_2, night){
-            this.dato_lvl1_2-=1;
-            const container_lvl1_2 = this.add.container(100, 30).setScale(0.08); //su origen es 0.5
-            this.contenedor_lvl1_2 = this.add.image(0, 0, 'contenedor'); //su origen es 0.5
-            this.texto_lvl1_2 = this.add.text(250,-100,`x ${this.dato_lvl1_2}`,{
-            fontSize: 250}); // su origen es 0,0
-            this.head_lvl1_2 = this.add.image(-500, 50, 'head').setScale(15); //su origen es 0.5
-            this.cora_lvl1_2 = this.add.image(0, 0, 'coraz').setScale(5);
-            container_lvl1_2.add([
-                this.contenedor_lvl1_2,
-                this.head_lvl1_2,
-                this.cora_lvl1_2,
-                this.texto_lvl1_2]);
-
-            this.Nio_lvl1_2.setTint(0xff0000)
-            setTimeout(() => {
-                this.Nio_lvl1_2.clearTint();
-                }, 600);
-            this.choque.play();
-          }
-          this.physics.add.collider(this.Nio_lvl1_2,this.night,choqueEnemigo3,null,this);
-
-          this.vidas_N= 10;
-          this.vidas_N2= 10;
-          this.vidas_N3= 10;
+          this.vidas_N= 3;
+          this.vidas_N2= 3;
+          this.vidas_N3= 3;
           this.portal1=0;
 
           function balaEnemigo(bala_lvl1_2, night){
@@ -384,7 +318,25 @@ class SceneC extends Phaser.Scene{
                 this.bala_lvl1_2.destroy();
                 this.portal1+=1;
                 if(this.portal1 > 2){
-                    this.sigLvl.setVisible(1);
+                    this.sigLvl=this.add.sprite(660,420,'portal').setScale(0.7);
+                    this.physics.add.existing(this.sigLvl, false);
+                    this.sigLvl.body.setCollideWorldBounds(true);
+                    this.sigLvl.body.immovable=true;
+                    this.sigLvl.body.moves=false;
+
+                    this.anims.create({
+                        key: 'portal1',
+                        frames: this.anims.generateFrameNames('portal', {
+                        prefix: 'lvl1_2_',
+                        start: 0,
+                        end: 10
+                        }),
+                        repeat: -1,
+                        frameRate: 12
+                        });
+                    
+                    this.sigLvl.anims.play('portal1');
+                    this.physics.add.collider(this.Nio_lvl1_2,this.sigLvl,cambioScene2,null,this);
                   }
             }
             this.bala_lvl1_2.destroy();
@@ -401,7 +353,25 @@ class SceneC extends Phaser.Scene{
                 this.bala_lvl1_2.destroy();
                 this.portal1+=1;
                 if(this.portal1 > 2){
-                    this.sigLvl.setVisible(1);
+                    this.sigLvl=this.add.sprite(660,420,'portal').setScale(0.7);
+                    this.physics.add.existing(this.sigLvl, false);
+                    this.sigLvl.body.setCollideWorldBounds(true);
+                    this.sigLvl.body.immovable=true;
+                    this.sigLvl.body.moves=false;
+
+                    this.anims.create({
+                        key: 'portal1',
+                        frames: this.anims.generateFrameNames('portal', {
+                        prefix: 'lvl1_2_',
+                        start: 0,
+                        end: 10
+                        }),
+                        repeat: -1,
+                        frameRate: 12
+                        });
+                    
+                    this.sigLvl.anims.play('portal1');
+                    this.physics.add.collider(this.Nio_lvl1_2,this.sigLvl,cambioScene2,null,this);
                   }
             }
             this.bala_lvl1_2.destroy();
@@ -418,12 +388,50 @@ class SceneC extends Phaser.Scene{
                 this.bala_lvl1_2.destroy();
                 this.portal1+=1;
                 if(this.portal1 > 2){
-                    this.sigLvl.setVisible(1);
+                    this.sigLvl=this.add.sprite(660,420,'portal').setScale(0.7);
+                    this.physics.add.existing(this.sigLvl, false);
+                    this.sigLvl.body.setCollideWorldBounds(true);
+                    this.sigLvl.body.immovable=true;
+                    this.sigLvl.body.moves=false;
+                    this.sigLvl.setVisible(0);
+
+                    this.anims.create({
+                        key: 'portal1',
+                        frames: this.anims.generateFrameNames('portal', {
+                        prefix: 'lvl1_2_',
+                        start: 0,
+                        end: 10
+                        }),
+                        repeat: -1,
+                        frameRate: 12
+                        });
+                    
+                    this.sigLvl.anims.play('portal1');
+                    this.physics.add.collider(this.Nio_lvl1_2,this.sigLvl,cambioScene2,null,this);
                   }
             }
             this.bala_lvl1_2.destroy();
             this.enemigo1.play();
           }
+
+          ////////Movimientos Night////////////////
+          this.add.tween({
+            targets: [this.night],
+            y: 250,
+            yoyo: true,
+            duration: 500,
+            repeat: -1,
+            easy: 'Power1'
+            });
+
+        this.add.tween({
+            targets: [this.night2,this.night3],
+            y: 380,
+            yoyo: true,
+            duration: 1500,
+            repeat: -1,
+            easy: 'Power1'
+            });
         
         //Cartel de vidas
         const container_lvl1_2 = this.add.container(100, 30).setScale(0.08); //su origen es 0.5

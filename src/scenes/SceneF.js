@@ -23,6 +23,7 @@ class SceneF extends Phaser.Scene{
             this.m2.stop();
             this.m3.stop();
                            });
+
              this.registry.events.on('m2', (m2) => {
             console.log('Cambio música lvl 1');
             this.m1.stop();
@@ -36,6 +37,14 @@ class SceneF extends Phaser.Scene{
             this.m3.play();
         });
 
+        this.registry.events.on('Win', (Win) => {
+            console.log('Has ganado');
+            this.m1.play();
+            this.m2.stop();
+            this.m3.stop();
+            this.ganar = this.add.image(0, 0, 'winscene').setScale(1).setOrigin(0);
+                           });
+
     
 
 
@@ -43,6 +52,7 @@ class SceneF extends Phaser.Scene{
 
 
     update(time, delta) {
+        
         
     }
 }

@@ -26,6 +26,8 @@ class SceneE extends Phaser.Scene{
         this.disparo4 = this.sound.add("disparo",{volume: 4});
         this.caida3 = this.sound.add("caida",{volume: 4});
         this.choque3 = this.sound.add("picos",{volume: 4});
+        this.explosion2 = this.sound.add("explosion",{volume: 4});
+        this.win = this.sound.add("win",{volume: 4});
         
 //////////////////////////////////////DATOS//////////////////////////////////////////////////////////
         // this.scene.launch('SceneF')
@@ -33,6 +35,7 @@ class SceneE extends Phaser.Scene{
         this.dato_lvl2 = dato;
         this.dato2_lvl2 = dato2;
         this.data.set('curaciones', 1);
+        this.data.set('morfeo', 48);
         var sen1 = 0;
         var i = 0;
         var vivo = 0;
@@ -79,6 +82,46 @@ class SceneE extends Phaser.Scene{
             muros2.body.setCollideWorldBounds(true);
             muros2.body.immovable=true;
             muros2.body.moves=false;
+            } );
+        
+        this.grupoBala = this.physics.add.group();
+        this.grupoBala.create(-5,100,"bala2").setScale(0.1);
+        this.grupoBala.create(-5,250,"bala2").setScale(0.1);
+        this.grupoBala.children.iterate( (bala) => {
+            bala.body.setAllowGravity(false);
+            bala.body.setCollideWorldBounds(true);
+            bala.body.immovable=true;
+            bala.body.moves=true;
+            } );
+
+        this.grupoBala2 = this.physics.add.group();
+        this.grupoBala2.create(705,370,"balaLvl1").setScale(0.1);
+        this.grupoBala2.create(705,470,"balaLvl1").setScale(0.1);
+        this.grupoBala2.children.iterate( (bala2) => {
+            bala2.body.setAllowGravity(false);
+            bala2.body.setCollideWorldBounds(true);
+            bala2.body.immovable=true;
+            bala2.body.moves=true;
+            } );
+        
+        this.grupoBala3 = this.physics.add.group();
+        this.grupoBala3.create(-5,370,"bala2").setScale(0.1);
+        this.grupoBala3.create(-5,470,"bala2").setScale(0.1);
+        this.grupoBala3.children.iterate( (bala3) => {
+            bala3.body.setAllowGravity(false);
+            bala3.body.setCollideWorldBounds(true);
+            bala3.body.immovable=true;
+            bala3.body.moves=true;
+            } );
+
+        this.grupoBala4 = this.physics.add.group();
+        this.grupoBala4.create(705,100,"balaLvl1").setScale(0.1);
+        this.grupoBala4.create(705,250,"balaLvl1").setScale(0.1);
+        this.grupoBala4.children.iterate( (bala4) => {
+            bala4.body.setAllowGravity(false);
+            bala4.body.setCollideWorldBounds(true);
+            bala4.body.immovable=true;
+            bala4.body.moves=true;
             } );
  
 ////////////////////////////////////PERSONAJE////////////////////////////////////////////////////
@@ -268,6 +311,18 @@ class SceneE extends Phaser.Scene{
     /////////////////////////////FUNCIONES BALAS/////////////////////////////////////////
     function BalaMorfeo (bala, Morfeo)
     {
+        this.data.list.morfeo-=1;
+        console.log(this.data.get('morfeo'));
+        if(this.data.list.morfeo==0){
+            this.Morfeo.destroy();
+            this.win.play();
+            setTimeout(() => {
+                this.scene.stop('SceneE');
+                //this.scene.stop('SceneF');
+                this.registry.events.emit('Win', 1); 
+                }, 3000);
+
+        }
     Morfeo.setTint(0xff0000);
     setTimeout(() => {
         this.Morfeo.clearTint();
@@ -325,6 +380,7 @@ class SceneE extends Phaser.Scene{
             console.log("Colisionaron");
             this.registry.events.emit('daño', 1);   
             this.choque3.play();
+            this.Nio.setPosition(300,180);
            
         }
 
@@ -378,6 +434,221 @@ class SceneE extends Phaser.Scene{
           setTimeout( () => {
           cameralvl2.pan(this.container.x, this.container.y, 3000, 'Sine.easeInOut');
           }, 2000); 
+
+          /////////Mecanica Balas
+          function choqueBala(Nio, grupoBala){
+            this.dato_lvl2-=1;
+
+            const container = this.add.container(100, 30).setScale(0.08); 
+            this.contenedor = this.add.image(0, 0, 'contenedor'); 
+            this.texto = this.add.text(250,-100,'x '+ this.dato_lvl2,{
+             fontSize: 250}); // su origen es 0,0
+            this.head = this.add.image(-500, 50, 'head').setScale(15); 
+            this.cora = this.add.image(0, 0, 'coraz').setScale(5);
+            container.add([
+                this.contenedor,
+                this.head,
+                this.cora,
+                this.texto]);
+
+            Nio.setTint(0xff0000);           
+            setTimeout(() => {
+                this.Nio.clearTint();
+                }, 1300);
+            this.Nio.setPosition(this.Nio.x-20,this.Nio.y);
+            this.Nio.setPosition(300,180);
+            this.explosion2.play();
+        }
+        this.physics.add.collider(this.Nio, this.grupoBala, choqueBala, null, this);
+        this.physics.add.collider(this.Nio, this.grupoBala3, choqueBala, null, this);
+
+        function choqueBala2(Nio, grupoBala){
+          this.dato_lvl2-=1;
+
+          const container = this.add.container(100, 30).setScale(0.08); 
+          this.contenedor = this.add.image(0, 0, 'contenedor'); 
+          this.texto = this.add.text(250,-100,'x '+ this.dato_lvl2,{
+           fontSize: 250}); // su origen es 0,0
+          this.head = this.add.image(-500, 50, 'head').setScale(15); 
+          this.cora = this.add.image(0, 0, 'coraz').setScale(5);
+          container.add([
+              this.contenedor,
+              this.head,
+              this.cora,
+              this.texto]);
+
+          Nio.setTint(0xff0000);           
+          setTimeout(() => {
+              this.Nio.clearTint();
+              }, 1300);
+          this.Nio.setPosition(this.Nio.x-20,this.Nio.y);
+          this.Nio.setPosition(400,180);
+          this.explosion2.play();
+      }
+      this.physics.add.collider(this.Nio, this.grupoBala2, choqueBala2, null, this);
+      this.physics.add.collider(this.Nio, this.grupoBala4, choqueBala2, null, this);
+        setTimeout(() => {
+          this.add.tween({
+              targets: this.grupoBala.getChildren(),
+              x: 700,
+              duration: 6200,
+              repeat: -1,
+              easy: 'Power1'
+              });
+              setTimeout(() => {
+                  this.add.tween({
+                      targets: this.grupoBala2.getChildren(),
+                      x: -0.5859375,
+                      duration: 6200,
+                      repeat: -1,
+                      easy: 'Power1'
+                      });
+
+                      setTimeout(() => {
+                          this.add.tween({
+                              targets: this.grupoBala3.getChildren(),
+                              x: 700,
+                              duration: 6200,
+                              repeat: -1,
+                              easy: 'Power1'
+                              });
+
+                              setTimeout(() => {
+                                  this.add.tween({
+                                      targets: this.grupoBala4.getChildren(),
+                                      x: -0.5859375,
+                                      duration: 6200,
+                                      repeat: -1,
+                                      easy: 'Power1'
+                                      });
+                                  
+                                  }, 2600);
+                          
+                          }, 2600);
+                  
+                  }, 2600);
+          }, 2600);
+
+          this.timeline=this.tweens.timeline({
+            targets: [this.Morfeo],
+            paused: true,
+                // loop: 1,
+            tweens: [
+            {
+            y: 300,
+            duration: 2000
+            },
+            {
+            x: 600,
+            duration: 2000
+            }
+            ]
+
+            });
+
+            this.timeline2=this.tweens.timeline({
+                targets: [this.Morfeo],
+                paused: true,
+                    // loop: 1,
+                tweens: [
+                {
+                x: 80,
+                duration: 2000
+                }
+                ]
+                });
+
+            this.timeline3=this.tweens.timeline({
+                targets: [this.Morfeo],
+                paused: true,
+                    // loop: 1,
+                tweens: [
+                {
+                y: 100,
+                duration: 2000
+                }
+                ]
+    
+                });
+
+            this.timeline4=this.tweens.timeline({
+                targets: [this.Morfeo],
+                paused: true,
+                    // loop: 1,
+                tweens: [
+                {
+                x: 660,
+                duration: 2000
+                }
+                ]
+                });
+                
+            this.timeline5=this.tweens.timeline({
+                targets: [this.Morfeo],
+                paused: true,
+                    // loop: 1,
+                tweens: [
+                {
+                x: 350,
+                duration: 2000
+                }
+                ]
+                });
+            /////////////////////ITEMS//////////////
+            function escudo_lvl2(Nio, escudo){
+                this.dato_lvl2+=1;
+                this.escudo.destroy();
+                setTimeout(() => {
+                    this.Nio.clearTint();
+                    }, 1300);
+            }
+
+            function vida(Nio, cor) {
+                this.dato_lvl2+=1;
+                const container = this.add.container(100, 30).setScale(0.08); 
+                this.contenedor = this.add.image(0, 0, 'contenedor'); 
+                this.texto = this.add.text(250,-100,'x '+ this.dato_lvl2,{
+                fontSize: 250}); // su origen es 0,0
+                this.head = this.add.image(-500, 50, 'head').setScale(15); 
+                this.cora = this.add.image(0, 0, 'coraz').setScale(5);
+                container.add([
+                    this.contenedor,
+                    this.head,
+                    this.cora,
+                    this.texto]);
+
+                this.Nio.setTint(0x1405f6);
+                setTimeout(() => {
+                    this.Nio.clearTint();
+                    }, 600);
+                this.cor.destroy();
+            }
+
+            setTimeout(() => {
+                this.escudo=this.add.image(530,260,'Escudo').setScale(0.4);
+                this.physics.add.existing(this.escudo, false);
+                this.escudo.body.setCollideWorldBounds(true);
+                this.escudo.body.immovable=true;
+                this.escudo.body.moves=false;
+                this.escudo.body.setSize(90,90);
+                this.physics.add.collider(this.Nio,this.escudo,escudo_lvl2,null,this);
+                setTimeout(() => {
+                    this.escudo.destroy();
+                    setTimeout(() => {
+                        this.cor = this.add.sprite(100,120,'cora').setScale(0.5);
+                        this.physics.add.existing(this.cor, false);
+                        this.cor.body.setCollideWorldBounds(true);
+                        this.cor.body.immovable=true;
+                        this.cor.body.moves=false;
+                        this.cor.body.setSize(100,100);
+                        this.physics.add.collider(this.Nio,this.cor,vida,null,this);
+                        setTimeout(() => {
+                            this.cor.destroy();
+                            }, 2000);
+                        }, 2000);
+                    }, 6000);
+                
+                }, 10000);
     }
 
     update(time, delta) {
@@ -429,19 +700,29 @@ class SceneE extends Phaser.Scene{
 
                     this.fuerte = 0;
                 }
+        ////////Tweens Morfeo//////////
+        if(this.data.list.morfeo==40){
+            this.timeline.play();
+        }
+        if(this.data.list.morfeo==32){
+            this.timeline2.play();
+        }
+        if(this.data.list.morfeo==24){
+            this.timeline3.play();
+        }
+        if(this.data.list.morfeo==16){
+            this.timeline4.play();
+        }
+        if(this.data.list.morfeo==8){
+            this.timeline5.play();
+        }
 ////////////////////////////////////////////////////////////////////////////////////////////
             
-     
-
-    
-
-        if(this.dato_lvl2==0){
+        if(this.dato_lvl2 <= 0){
         console.log("Game Over");
         this.scene.start('SceneGO');
         this.scene.stop('SceneE');
-        
-        
-     }
+        }
 
                
 

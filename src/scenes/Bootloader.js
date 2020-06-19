@@ -40,7 +40,7 @@ class Bootloader extends Phaser.Scene{
         //lvl2
         this.load.image(['suelo', 'pared',]);
         this.load.image("Plataformas","Plataformas2.png");
-        this.load.image("cielo3","Cielo3.png");
+        //this.load.image("cielo3","Cielo3.png");
         this.load.image("fondonoche","Fondo noche.png");
         this.load.atlas('nio','nio_PP3/nio.png','nio_PP3/nio_atlas.json');
         this.load.atlas('morfeo','morfeo_PP3/morfeo.png','morfeo_PP3/morfeo_atlas.json');
@@ -51,11 +51,15 @@ class Bootloader extends Phaser.Scene{
         this.load.image("coraz","coraz.png");
         this.load.image('disparo','disparo.png');
         this.load.image('escalon','escalon.png');
+        this.load.image("winscene","winscene.jpg");
+        
 
         //GameOverScene
         this.load.image("gameover","Game over.png");
         this.load.image("back","back.png");
         this.load.image("fondo","fondo.png");
+        this.load.image("skull","skull.png");
+        this.load.audio("gameOver","gameOver.mp3");
 
         //Audio lvls
         this.load.audio("disparo","disparo.mp3");
@@ -70,6 +74,7 @@ class Bootloader extends Phaser.Scene{
         this.load.audio("m3","m31.mp3");
         this.load.audio("angelical","angelical.mp3");
         this.load.audio("cambio","cambio.mp3");
+        this.load.audio("win","win.mp3");
         
     }
     create() {
